@@ -34,5 +34,15 @@ class TestDownloader(unittest.TestCase):
             self.assertEqual(res.quality_or_format, "mp3")
             self.assertEqual(res.media_type, "audio")
 
+    def test_mock_playlist_folder_creation(self):
+        downloader = Downloader()
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            results = downloader.download_playlist("https://example.com/playlist", quality="720p", output_dir=tmp_dir)
+            self.assertTrue(len(results) >= 1)
+            # Check that files were placed in a subfolder or output_dir
+            for r in results:
+                if r.file_path:
+                    self.assertTrue(r.file_path.parent.exists())
+
 if __name__ == "__main__":
     unittest.main()

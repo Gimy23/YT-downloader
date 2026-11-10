@@ -93,6 +93,13 @@ def handle_playlist_download(downloader: Downloader, history: HistoryService, co
     progress_ui.stop()
     success_cnt = sum(1 for r in results if r.success)
     console.print(f"\n[bold green]Playlist summary: {success_cnt}/{len(results)} items downloaded successfully.[/bold green]")
+    folder_str = ""
+    for r in results:
+        if r.file_path:
+            folder_str = str(r.file_path.parent)
+            break
+    if folder_str:
+        console.print(f"Saved in playlist folder: [bold cyan]{folder_str}[/bold cyan]")
 
 def handle_history_menu(history: HistoryService) -> None:
     items = history.get_all()

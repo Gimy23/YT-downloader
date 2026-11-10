@@ -43,3 +43,10 @@ def playlist_command(
 
     success_cnt = sum(1 for r in results if r.success)
     out_console.print(f"\n[bold green]Playlist summary: {success_cnt}/{len(results)} downloaded successfully.[/bold green]")
+    folder_str = ""
+    for r in results:
+        if r.file_path:
+            folder_str = str(r.file_path.parent)
+            break
+    if folder_str:
+        out_console.print(f"Saved to: [bold cyan]{folder_str}[/bold cyan]")

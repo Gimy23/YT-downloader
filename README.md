@@ -257,5 +257,3 @@ pytest -v
 `ytdl` is an open-source command-line media retrieval utility designed exclusively for downloading and archiving content that the user owns, has authorization to access, or is explicitly available in the public domain or under permissive licenses (such as Creative Commons). 
 
 Users are strictly responsible for complying with all applicable copyright laws, intellectual property rights, and terms of service of any third-party media platforms. `ytdl` does not bypass DRM, paywalls, encryption schemes, or authentication restrictions.
-# YT-downloader
-# YT-downloader

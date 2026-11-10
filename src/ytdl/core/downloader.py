@@ -9,7 +9,7 @@ from ytdl.core.formats import build_audio_postprocessors, build_video_format_str
 from ytdl.core.progress import ProgressDispatcher, YtdlpProgressHook
 from ytdl.models.download import DownloadProgress, DownloadResult
 from ytdl.services.ffmpeg_service import FFmpegService
-from ytdl.utils.paths import resolve_output_path
+from ytdl.utils.paths import resolve_output_path, sanitize_filename
 from ytdl.utils.validators import clean_media_url, normalize_playlist_url
 
 class Downloader:
@@ -228,6 +228,11 @@ class Downloader:
         if not pl_info or "entries" not in pl_info:
             return [self.download_video(url, quality=quality, output_dir=target, cookies_from_browser=cookies_from_browser, cookies_file=cookies_file, progress_callback=on_item_progress)]
 
+        # Automatically create a dedicated playlist folder
+        raw_pl_title = pl_info.get("title") or pl_info.get("playlist_title") or f"Playlist_{pl_info.get('id', 'tracks')}"
+        playlist_folder = target / sanitize_filename(raw_pl_title)
+        playlist_folder.mkdir(parents=True, exist_ok=True)
+
         entries = list(pl_info.get("entries") or [])
         total = len(entries)
         s_idx = max(1, range_start or 1)
@@ -245,7 +250,7 @@ class Downloader:
             res = self.download_video(
                 e_url,
                 quality=quality,
-                output_dir=target,
+                output_dir=playlist_folder,
                 cookies_from_browser=cookies_from_browser,
                 cookies_file=cookies_file,
                 progress_callback=on_item_progress,
